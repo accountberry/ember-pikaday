@@ -59,7 +59,8 @@ export default Ember.Mixin.create({
       maxDate: this.get('maxDate') || null,
       defaultDate: this.get('defaultDate') || null,
       setDefaultDate: !!this.get('defaultDate'),
-      theme: this.get('theme') || null
+      theme: this.get('theme') || null,
+      clearInvalidDate: this.get('clearInvalidDate') || false
     };
   },
 
@@ -201,5 +202,17 @@ export default Ember.Mixin.create({
 
   _updateOptions() {
     this.get('pikaday').config(this.get('_options'));
+  },
+
+  verifyInvalidDate(element) {
+    if (this.get('clearInvalidDate')) {
+      var validDate = moment(element.val(), this.get('format'),true ).isValid();
+      
+      if (!validDate) {
+        element.val(null);
+        this.set('value', null);
+        this.get('onSelection')(null);
+      }
+    }
   }
 });
