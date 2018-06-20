@@ -34,6 +34,10 @@ export default Ember.Component.extend(PikadayMixin, {
       this.set('value', null);
       this.get('onSelection')(null);
     }
+    
+    if (this.get('clearInvalidDate')) {
+      this.verifyInvalidDate(this.$());
+    }
 
     this.get('onClose')();
   },
